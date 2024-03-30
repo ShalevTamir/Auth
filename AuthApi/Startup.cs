@@ -16,8 +16,8 @@ using System.Threading.Tasks;
 using Auth.Auth.Services;
 using Auth.Mongo.Services;
 using Auth.Auth.Interfaces;
-using JwtAuth.Interfaces;
-using JwtAuth;
+using AuthService.Services;
+using AuthService.Interfaces;
 
 namespace Auth
 {

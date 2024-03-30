@@ -8,7 +8,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Auth": {
+    "AuthApi": {
       "commandName": "Project",
       "launchUrl": "weatherforecast",
       "environmentVariables": {

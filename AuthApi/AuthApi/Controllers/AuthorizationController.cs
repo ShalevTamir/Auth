@@ -3,7 +3,7 @@ using Auth.Auth.Models;
 using Auth.Auth.Services;
 using Auth.Mongo.Models;
 using Auth.Mongo.Services;
-using JwtAuth.Interfaces;
+using AuthService.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
