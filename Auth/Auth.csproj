@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.24.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="JwtAuth">
+      <HintPath>..\..\JwtAuth\JwtAuth\bin\Debug\netcoreapp3.1\JwtAuth.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+
+</Project>
