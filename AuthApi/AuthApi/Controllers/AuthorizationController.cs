@@ -6,7 +6,9 @@ using Auth.Mongo.Services;
 using AuthService.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,12 +18,12 @@ namespace Auth.Auth.Controllers
     [ApiController]
     public class AuthorizationController : Controller
     {
-        private ITokenGenerator _tokenGenerator;
+        private ITokenService _tokenService;
         private IEncryptionHandler _encryptionHandler;
         private MongoUsersService _mongoUsersService;
-        public AuthorizationController(ITokenGenerator tokenGenerator, IEncryptionHandler encryptionHandler, MongoUsersService mongoUsersService)
+        public AuthorizationController(ITokenService tokenService, IEncryptionHandler encryptionHandler, MongoUsersService mongoUsersService)
         {
-            _tokenGenerator = tokenGenerator;
+            _tokenService = tokenService;
             _mongoUsersService = mongoUsersService;
             _encryptionHandler = encryptionHandler;
         }
@@ -36,12 +38,13 @@ namespace Auth.Auth.Controllers
                 );
             if (userAuthenticated)
             {
-                return Ok(JsonConvert.SerializeObject(_tokenGenerator.GenerateToken()));
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Username)
+                };
+                return Ok(JsonConvert.SerializeObject(_tokenService.GenerateAccessToken(claims)));
             }
-            else
-            {
-                return Unauthorized("Username or password are incorrect");
-            }
+            return Unauthorized("Username or password are incorrect");
         }
 
         [HttpPost("signup")]
