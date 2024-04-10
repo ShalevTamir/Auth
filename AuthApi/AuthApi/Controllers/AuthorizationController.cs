@@ -3,6 +3,8 @@ using Auth.Auth.Models;
 using Auth.Auth.Services;
 using Auth.Mongo.Models;
 using Auth.Mongo.Services;
+using AuthApi.AuthApi.Interfaces;
+using AuthApi.AuthApi.Models.Dtos;
 using AuthService.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -20,12 +22,18 @@ namespace Auth.Auth.Controllers
     {
         private ITokenService _tokenService;
         private IEncryptionHandler _encryptionHandler;
+        private IRefreshTokenHandler _refreshTokenHandler;
         private MongoUsersService _mongoUsersService;
-        public AuthorizationController(ITokenService tokenService, IEncryptionHandler encryptionHandler, MongoUsersService mongoUsersService)
+        public AuthorizationController(
+            ITokenService tokenService,
+            IEncryptionHandler encryptionHandler,
+            IRefreshTokenHandler refreshTokenHandler,
+            MongoUsersService mongoUsersService)
         {
             _tokenService = tokenService;
             _mongoUsersService = mongoUsersService;
             _encryptionHandler = encryptionHandler;
+            _refreshTokenHandler = refreshTokenHandler;
         }
 
 
@@ -38,11 +46,22 @@ namespace Auth.Auth.Controllers
                 );
             if (userAuthenticated)
             {
-                var claims = new List<Claim>
+                var claims = new[]
                 {
                     new Claim(ClaimTypes.Name, user.Username)
                 };
-                return Ok(JsonConvert.SerializeObject(_tokenService.GenerateAccessToken(claims)));
+                var accessToken = _tokenService.GenerateAccessToken(claims);
+                var refreshToken = _tokenService.GenerateRefreshToken();
+
+                _refreshTokenHandler.SaveRefreshToken(user.Username, refreshToken);
+
+                return Ok(
+                    new Tokens()
+                    {
+                        AccessToken = accessToken,
+                        RefreshToken = refreshToken
+                    }
+                );
             }
             return Unauthorized("Username or password are incorrect");
         }

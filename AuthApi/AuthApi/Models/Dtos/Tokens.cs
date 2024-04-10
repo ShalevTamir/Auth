@@ -1,8 +1,13 @@
-﻿namespace AuthApi.AuthApi.Models.Dtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AuthApi.AuthApi.Models.Dtos
 {
     public class Tokens
     {
-        public string? AccessToken { get; set; }
-        public string? RefreshToken { get; set; }
+        [Required]
+        public string AccessToken { get; set; }
+
+        [Required]
+        public string RefreshToken { get; set; }
     }
 }

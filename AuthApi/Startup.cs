@@ -18,6 +18,8 @@ using Auth.Mongo.Services;
 using Auth.Auth.Interfaces;
 using AuthService.Services;
 using AuthService.Interfaces;
+using AuthApi.AuthApi.Interfaces;
+using AuthApi.AuthApi.Services;
 
 namespace Auth
 {
@@ -35,6 +37,7 @@ namespace Auth
         {
             services.AddSingleton<ITokenService, TokenService>();
             services.AddSingleton<IEncryptionHandler, Sha256Encryptor>();
+            services.AddSingleton<IRefreshTokenHandler, RefreshTokenHandler>();
             services.AddSingleton<MongoUsersService>();
 
             services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
