@@ -20,6 +20,7 @@ using AuthService.Services;
 using AuthService.Interfaces;
 using AuthApi.AuthApi.Interfaces;
 using AuthApi.AuthApi.Services;
+using AuthService.Middlewares.Extentions;
 
 namespace Auth
 {
@@ -51,6 +52,7 @@ namespace Auth
 
             services.AddMvc();
             services.AddControllers();
+            services.AddTokenAuthentication();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +64,8 @@ namespace Auth
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseRouting();
 

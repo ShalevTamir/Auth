@@ -42,8 +42,15 @@ namespace AuthApi.AuthApi.Controllers
         public IActionResult Revoke()
         {
             var username = User.Identity.Name;
-            _refreshTokenHandler.DeleteRefreshToken(username);
-            return Ok();
+            bool deletedSuccesfully = _refreshTokenHandler.DeleteRefreshToken(username);
+            if (deletedSuccesfully)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("User already revoked");
+            }
         }
     }
 }
