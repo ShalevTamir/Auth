@@ -3,11 +3,12 @@ using AuthApi.AuthApi.Models.Dtos;
 using AuthService.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace AuthApi.AuthApi.Controllers
 {
-    [Route("token")]
+    [Route("tokens")]
     [ApiController]
     public class TokenController: Controller
     {
@@ -34,7 +35,7 @@ namespace AuthApi.AuthApi.Controllers
 
             string newAccessToken = _tokenService.GenerateAccessToken(principals.Claims);
 
-            return Ok(newAccessToken);
+            return Ok(JsonConvert.SerializeObject(newAccessToken));
         }
 
         [HttpPost, Authorize]
